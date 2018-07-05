@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="col-md-6 col-md-offset-3">
+        <h1 style="padding-top: 30px;padding-bottom: 15px;">Table demo</h1>
+        <div id="app">
+            <!--书籍列表部分-->
+            <table class="table table-hover" id="table">
+                <captiopn></captiopn>
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>书名</th>
+                    <th>作者</th>
+                    <th>价格</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <tr>
+                    <td></td>
+                    <td>红楼梦</td>
+                    <td>曹雪芹</td>
+                    <td>34</td>
+                    <td>
+                        <button class="btn btn-danger" type="button" class="del" onclick="delRow(this);">删除</button>
+                        <button class="btn btn-success" type="button" class="edit" onclick="editRow(this)">修改</button>
+                        <button class="btn btn-success" type="button" class="add" onclick="addRow(this)">添加</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>西游记</td>
+                    <td>吴承恩</td>
+                    <td>35</td>
+                    <td>
+                        <button class="btn btn-danger" type="button" class="del" onclick="delRow(this);">删除</button>
+                        <button class="btn btn-success" type="button" class="edit" onclick="editRow(this)">修改</button>
+                        <button class="btn btn-success" type="button" class="add" onclick="addRow(this)">添加</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>三国演义</td>
+                    <td>罗贯中</td>
+                    <td>37</td>
+                    <td>
+                        <button class="btn btn-danger" type="button" class="del" onclick="delRow(this)">删除</button>
+                        <button class="btn btn-success" type="button" class="edit" onclick="editRow(this)">修改</button>
+                        <button class="btn btn-success" type="button" class="add" onclick="addRow(this)">添加</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>水浒传</td>
+                    <td>施耐庵</td>
+                    <td>42</td>
+                    <td>
+                        <button class="btn btn-danger" type="button" class="del" onclick="delRow(this)">删除</button>
+                        <button class="btn btn-success" type="button" class="edit" onclick="editRow(this)">修改</button>
+                        <button class="btn btn-success" type="button" class="add" onclick="addRow(this)">添加</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!--添加书籍模块-->
+            <div id="addBook" style="display:none">
+                <legend>添加书籍</legend>
+                <div class="form-group">
+                    <label for="group">书名</label>
+                    <input type="text" class="form-control" id="group">
+                </div>
+                <div class="form-group">
+                    <label for="author">作者</label>
+                    <input type="text" class="form-control" id="author">
+                </div>
+                <div class="form-group">
+                    <label for="price">价格</label>
+                    <input type="text" class="form-control" id="price">
+                </div>
+                <button class="btn btn-primary btn-block" onclick="add()">添加</button>
+                <button class="btn btn-primary btn-block" onclick="reset()">重置</button>
+                <button class="btn btn-primary btn-block" onclick="addCancel()">取消</button>
+            </div>
+            <br>
+            <!--修改书籍模块-->
+            <div id="editBook" style="display:none">
+                <legend>修改书籍</legend>
+                <div class="form-group">
+                    <label for="group1">书名</label>
+                    <input type="text" class="form-control" id="group1">
+                </div>
+                <div class="form-group">
+                    <label for="author1">作者</label>
+                    <input type="text" class="form-control" id="author1">
+                </div>
+                <div class="form-group">
+                    <label for="price1">价格</label>
+                    <input type="text" class="form-control" id="price1">
+                </div>
+                <button class="btn btn-primary btn-block" onclick="complete()">完成</button>
+                <button class="btn btn-primary btn-block" onclick="editReset()">重置</button>
+                <button class="btn btn-primary btn-block" onclick="editCancel()">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //加载页面的时候自动调用
+    addNumber();
+    //自动添加序号，更新序号
+    function addNumber() {
+        var len = document.getElementById('tbody').rows;
+        for(var i=0; i<len.length; i++) {
+            len[i].cells[0].innerText = i + 1;
+        }
+    }
+    //获取点击的那一行的行号
+    function getRow(r) {
+        var i = r.parentNode.parentNode.rowIndex;
+        return i;
+    }
+    //添加重置，清零
+    function reset() {
+        document.getElementById('group').value = '';
+        document.getElementById('author').value = '';
+        document.getElementById('price').value = '';
+    }
+    //删除某一行
+    function delRow(r) {
+        document.getElementById('table').deleteRow(getRow(r));
+        addNumber();
+    }
+    /*添加某一行*/
+    //点击添加按钮，弹出添加框
+    function addRow(r) {
+        reset();
+        document.getElementById('addBook').style = "display: block";
+        lineNumber = getRow(r);//把该行号赋给全局变量
+    }
+    //将需要添加的数据更新到列表中
+    function add() {
+        var arr = new Array();
+        arr[1] = document.getElementById('group').value;
+        arr[2] = document.getElementById('author').value;
+        arr[3] = document.getElementById('price').value;
+        arr[4] = '<button class="btn btn-danger" type="button" class="del" onclick="delRow(this);">删除</button>\n' +
+            '                        <button class="btn btn-success" type="button" class="edit" onclick="editRow(this)">修改</button>\n' +
+            '                        <button class="btn btn-success" type="button" class="add" onclick="addRow(this)">添加</button>'
+        var x = document.getElementById('table').insertRow(lineNumber + 1);//在点击的那一行下面添加一行
+        for(var i=0; i<arr.length; i++){
+            x.insertCell(i).innerHTML = arr[i];
+        }
+        addNumber();
+        document.getElementById('addBook').style = "display: none";
+    }
+    /*修改某一行*/
+    //点击修改按钮，弹出修改框
+    function editRow(r) {
+        editLineNumber = getRow(r);
+        document.getElementById('editBook').style = "display: block";
+        editReset();
+        /*var arr = new Array();
+        for(var i=0; i<3; i++) {
+            arr[i] = document.getElementById('table').rows[editLineNumber].cells[i+1].innerText;
+        }
+        document.getElementById('group1').value = arr[0];
+        document.getElementById('author1').value = arr[1];
+        document.getElementById('price1').value = arr[2];*/
+    }
+    //将修改后的数据更新到列表里
+    function complete() {
+        document.getElementById('table').deleteRow(editLineNumber);//删除原来那行
+        var arr = new Array();
+        arr[1] = document.getElementById('group1').value;
+        arr[2] = document.getElementById('author1').value;
+        arr[3] = document.getElementById('price1').value;
+        arr[4] = '<button class="btn btn-danger" type="button" class="del" onclick="delRow(this);">删除</button>\n' +
+            '                        <button class="btn btn-success" type="button" class="edit" onclick="editRow(this)">修改</button>\n' +
+            '                        <button class="btn btn-success" type="button" class="add" onclick="addRow(this)">添加</button>'
+        var x = document.getElementById('table').insertRow(editLineNumber);//添加原来那行
+        for(var i=0; i<arr.length; i++){
+            x.insertCell(i).innerHTML = arr[i];
+        }
+        addNumber();
+        document.getElementById('editBook').style = "display: none";
+    }
+    //修改框中的值为所选列表中的值
+    function editReset() {
+        var arr = new Array();
+        for(var i=0; i<3; i++) {
+            arr[i] = document.getElementById('table').rows[editLineNumber].cells[i+1].innerText;
+        }
+        document.getElementById('group1').value = arr[0];
+        document.getElementById('author1').value = arr[1];
+        document.getElementById('price1').value = arr[2];
+    }
+    //取消添加
+    function addCancel() {
+        document.getElementById('addBook').style = "display: none";
+    }
+    //取消编辑
+    function editCancel() {
+        document.getElementById('editBook').style = "display: none";
+    }
+</script>
+</body>
+</html>
